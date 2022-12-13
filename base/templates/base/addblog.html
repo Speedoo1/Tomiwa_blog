@@ -1,0 +1,42 @@
+{% extends 'base/navbar.html'%}
+{% block post%}{%endblock%}
+
+
+{% block delete %}&nbsp;&nbsp; <a href="{% url 'base:index' %}" class="btn btn-outline-danger my-2 my-sm-0" >Cancel</a>{%endblock%}
+
+
+{% load static%}
+
+{% block body%}
+<br/>
+<div class="container">
+    <div class="row">
+        <div class="col-sm-12 col-md-12 col  offset-md-2">
+            {% if page == 'add' %}
+              <form action="{% url 'base:addpost' %}" method="post" enctype="multipart/form-data">
+             {%csrf_token%}
+        {{field.media}}
+    {{field.as_p}}
+                   <button class="btn btn-success" type="submit">POST</button>
+              </form>
+                  {%else%}
+                    <form action="{% url 'base:update' post.id %}" method="post" enctype="multipart/form-data">
+             {%csrf_token%}
+        {{field.media}}
+    {{field.as_p}}
+
+  <button class="btn btn-success" type="submit">Update POST</button>
+    </form>
+                  {%endif%}
+        </div>
+    </div>
+</div>
+    </div>
+
+    </div>
+
+
+</div>
+
+
+{%endblock%}
