@@ -11,7 +11,7 @@ from django.shortcuts import render, redirect
 
 # Create your views here.
 from base.ck import addck
-from base.models import blog_post, post_comments, sub_comments, blog_like
+from base.models import blog_post, post_comments, sub_comments, blog_like, affiliate
 
 
 def base(request, ):
@@ -34,6 +34,13 @@ def add_blog(request):
 
 def singleblog(request, pk):
     post = blog_post.objects.get(id=pk)
+    aff = affiliate.objects.all()
+    try:
+        url = "https://zenquotes.io/api/random"
+        moltivate = requests.get(url).json()[0]['q']
+    except:
+        moltivate = 'Never give up on what you are doing'
+
     getlike = 'Dislike'
     try:
         getlikes = post.blog_like_set.get(username=request.user)
@@ -55,7 +62,7 @@ def singleblog(request, pk):
         # return redirect('base:single', post.id)
 
     context = {'post': post, 'comment': showcomments, 'totalcomment': totalcomment, 'switch': switch,
-               'totallike': totallike, 'like': getlike}
+               'totallike': totallike, 'like': getlike, 'moltivate': moltivate, 'affiliate': aff}
     return render(request, 'base/sp.html', context)
 
 
@@ -154,3 +161,7 @@ def updatepost(request, pk):
             return redirect('base:single', blogg.id)
     context = {'field': form, 'page': page, "post": blogg}
     return render(request, 'base/addblog.html', context)
+
+
+def about(request):
+    return render(request, 'base/about.html')

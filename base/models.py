@@ -75,3 +75,7 @@ class sub_comments(models.Model):
 
     def __str__(self):
         return str(self.message)
+
+
+class affiliate(models.Model):
+    link = models.TextField(blank=True, null=True)

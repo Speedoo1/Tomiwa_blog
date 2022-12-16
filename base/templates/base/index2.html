@@ -3,7 +3,12 @@
 {% extends 'base/navbar.html'%}
 {% block delete%}{%endblock%}
  {% block update %}{%endblock%}
+ {% block home %}
+      <li class="nav-items active">
+        <a class="nav-link" href="{% url 'base:index'%}">Home <span class="sr-only">(current)</span></a>
 
+      </li>
+        {%endblock %}
 
 <!--carousel start here-->
 {%block body%}
