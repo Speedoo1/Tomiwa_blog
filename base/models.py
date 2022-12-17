@@ -19,10 +19,10 @@ class User(AbstractUser):
 class blog_post(models.Model):
     id = models.UUIDField(default=uuid.uuid4, editable=False, primary_key=True)
     topic = models.CharField(max_length=300, null=True, blank=True)
+    summary = models.TextField(null=True, blank=True)
     image = models.ImageField(null=True, blank=True)
     created = models.DateTimeField(auto_now_add=True, null=True, blank=True)
     body = RichTextUploadingField(blank=True, null=True, )
-    like = models.ManyToManyField(User)
 
     def __str__(self):
         return str(self.topic)
@@ -79,3 +79,23 @@ class sub_comments(models.Model):
 
 class affiliate(models.Model):
     link = models.TextField(blank=True, null=True)
+
+
+class carousel(models.Model):
+    image = models.ImageField()
+    quote = models.CharField(max_length=500)
+
+    def save(self, *args, **kwargs):
+        super().save(*args, **kwargs)
+        if self.image:
+            img = Image.open(self.image.path)
+            size = 400, 300
+            img.thumbnail(size, Image.LANCZOS)
+            img.save(self.image.path)
+
+
+class view(models.Model):
+    blog = models.ForeignKey(blog_post, on_delete=models.CASCADE)
+    ip = models.CharField(max_length=200, null=True, blank=True)
+    def __str__(self):
+        return  str(self.ip)

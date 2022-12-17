@@ -1,3 +1,4 @@
+import socket
 import time
 from datetime import date
 
@@ -11,7 +12,7 @@ from django.shortcuts import render, redirect
 
 # Create your views here.
 from base.ck import addck
-from base.models import blog_post, post_comments, sub_comments, blog_like, affiliate
+from base.models import blog_post, post_comments, sub_comments, blog_like, affiliate, carousel
 
 
 def base(request, ):
@@ -19,9 +20,10 @@ def base(request, ):
     url = 'https://newsapi.org/v2/top-headlines?country=ng&apiKey=4698b5f489f140de81a1b5af83d77359'
     post = blog_post.objects.all()
     data = requests.get(url).json()
+    caro = carousel.objects.all()
     print(data)
 
-    context = {'post': post, 'news': data['articles']}
+    context = {'post': post, 'news': data['articles'], 'carousel': caro}
 
     return render(request, 'base/index2.html', context)
 
@@ -33,8 +35,18 @@ def add_blog(request):
 
 
 def singleblog(request, pk):
+    # Python Program to Get IP Address
+
+    hostname = socket.gethostname()
+    IPAddr = socket.gethostbyname(hostname)
+
+    print("Your Computer Name is:" + hostname)
+    print("Your Computer IP Address is:" + IPAddr)
+
     post = blog_post.objects.get(id=pk)
     aff = affiliate.objects.all()
+    getlike = post.view_set.get_or_create(ip=IPAddr)
+
     try:
         url = "https://zenquotes.io/api/random"
         moltivate = requests.get(url).json()[0]['q']
@@ -95,14 +107,13 @@ def deletecomment(request, pk):
 @login_required(login_url="base:loging")
 def likeblog(request, pk):
     post = blog_post.objects.get(id=pk)
-    try:
+    like = post.blog_like_set.filter(username=request.user)
+    if like:
         getlike = post.blog_like_set.get(username=request.user)
-    except:
-        getlike = post.blog_like_set.create(username=request.user, like="Like")
-        return redirect('base:single', post.id)
+        getlike.delete()
+    else:
+        getlike = post.blog_like_set.get_or_create(username=request.user)
 
-    getlike = post.blog_like_set.get(username=request.user)
-    getlike.delete()
     return redirect('base:single', post.id)
 
 
