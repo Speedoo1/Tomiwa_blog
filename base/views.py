@@ -6,13 +6,14 @@ import requests
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.hashers import make_password
 from django.db.models import Count
 from django.http import HttpResponseRedirect
 from django.shortcuts import render, redirect
 
 # Create your views here.
 from base.ck import addck
-from base.models import blog_post, post_comments, sub_comments, blog_like, affiliate, carousel
+from base.models import blog_post, post_comments, sub_comments, blog_like, affiliate, carousel, User
 
 
 def base(request, ):
@@ -152,6 +153,28 @@ def addpost(request):
 def createaccout(request):
     if request.method == 'POST':
         username = request.POST.get('username')
+        pas = request.POST.get('pass')
+        rpass = request.POST.get('rpass')
+        mail = request.POST.get('email')
+        sex = request.POST.get('gender')
+        number = request.POST.get('phone')
+        address = request.POST.get('address')
+        try:
+            mail = User.objects.get(email=mail)
+        except:
+            if pas == rpass:
+                get_pass = make_password(pas)
+                account = User(username=username, password=get_pass, gender=sex, email=mail, phone=number,
+                               address=address)
+                if account:
+                    account.save()
+                    messages.success(request, 'Account Created successfully')
+                    return redirect('base:loging')
+            else:
+                messages.error(request, 'Password Did not match')
+                return redirect('base:signup')
+        messages.error(request, 'User Already have an Account')
+
     return render(request, 'base/signup.html')
 
 
@@ -175,4 +198,10 @@ def updatepost(request, pk):
 
 
 def about(request):
-    return render(request, 'base/about.html')
+    about = User.objects.get(email='azeezadedeji638@gmail.com')
+    context = {'about': about}
+    return render(request, 'base/about.html', context)
+
+
+def contact(request):
+    return render(request, 'base/contactpage.html')

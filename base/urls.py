@@ -19,6 +19,7 @@ urlpatterns = [
     path('add-post', views.addpost, name="addpost"),
     path('delete-post/<str:pk>', views.deletepost, name='delete'),
     path('update-post/<str:pk>', views.updatepost, name='update'),
-    path('about', views.about, name='about')
+    path('about', views.about, name='about'),
+    path('contact/', views.contact, name='contact')
 
 ]

@@ -10,8 +10,12 @@ from django.db import models
 class User(AbstractUser):
     email = models.EmailField(unique=True)
     phone = models.CharField(max_length=20)
-    username = models.CharField(max_length=100)
-    profile_image = models.ImageField()
+    username = models.CharField(max_length=200)
+    gender = models.CharField(max_length=50, null=True)
+
+    address = models.CharField(max_length=500, null=True)
+
+    about_me = RichTextUploadingField(blank=True, null=True, )
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = ['username']
 
@@ -97,5 +101,6 @@ class carousel(models.Model):
 class view(models.Model):
     blog = models.ForeignKey(blog_post, on_delete=models.CASCADE)
     ip = models.CharField(max_length=200, null=True, blank=True)
+
     def __str__(self):
-        return  str(self.ip)
+        return str(self.ip)

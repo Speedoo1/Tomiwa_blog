@@ -1,6 +1,11 @@
 {% extends 'base/navbar.html'%}
 {% block delete %}{%endblock%}
 {% load static %}
+  {% block contact %}
+      <li class="nav-items active">
+        <a class="nav-link" href="{% url 'base:contact'%}">Contact</a>
+      </li>
+        {% endblock %}
 {%block body %}
 <style>
 body {font-family: Arial, Helvetica, sans-serif;}
@@ -69,11 +74,9 @@ span.psw {
 }
 </style>
 
-<form action="{% url 'base:signup' %}" class="forms" method="post">
+<form action="" class="forms" method="post">
   {% csrf_token %}
-  <div class="imgcontainer">
-    <img src="https://www.w3schools.com/howto/img_avatar2.png" alt="Avatar"  class="avatar">
-  </div>
+
 
 
   <div class="container">
@@ -87,32 +90,19 @@ span.psw {
                    </div>
 
                   {%endfor%}
-    <label ><b>Email</b></label>
-    <input type="text" placeholder="Enter Email" name="email" required>
-     <label ><b>Full Name</b></label>
-    <input type="text" placeholder="Enter Full Name"   name="username" required>
-     <label ><b>Home Address</b></label>
-    <input type="text" placeholder="Enter Address"  name="address" required>
-       <label ><b>Phone number</b></label>
-    <input type="text" placeholder="Phone number"  name="phone" required>
-       <label ><b>Select Gender</b></label>
-      <select style="width:100%; margin: 8px 0px;  padding: 12px 20px;" name="gender">
-          <option value="Male">Male</option>
-          <option value="Female">Female</option>
-      </select><br>
-    <label for="psw"><b>Password</b></label>
-    <input type="password" placeholder="Enter Password" id="psw" name="pass" required>
- <label for="rpsw"><b>Repeat Password</b></label>
-    <input type="password" placeholder="Repeat Password" id="rpsw" name="rpass" required>
+    <label for="uname"><b>Email</b></label>
+    <input type="text" placeholder="Enter Email" id="uname"  name="email" required>
 
-    <button type="submit" class="btn btn-success mt-3" >Create Account</button><br/><br/>
+    <label for="psw"><b>Name</b></label>
+    <input type="text" placeholder="Enter your name" id="psw" name="pass" required>
+       <label for="psw"><b>Subject</b></label><br>
+    <textarea id="subject" class="pt-2 pl-3" name="subject" rows="45"placeholder="Write something.." style="height:200px; width:100%;"></textarea><br>
+
+    <button type="submit" class="btn btn-success mt-3 w-15" >Send Message</button><br/><br/>
 
   </div>
 
-  <div class="container" style="background-color:#f1f1f1">
-    <span>Already a member &nbsp;<a href="">Login</a></span>
-<!--    <span class="psw">Forgot <a href="#">password?</a></span>-->
-  </div>
+
 </form>
 
 

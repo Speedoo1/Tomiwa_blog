@@ -22,7 +22,7 @@
 </head>
 <body>
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark ">
-  <a class="navbar-brand" href="#">𝔗𝔬𝔪𝔦𝔴𝔞</a>
+  <a class="navbar-brand" href="{% url 'base:index' %}">𝔖𝔭𝔢𝔢𝔡𝔬𝔬</a>
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon"></span>
   </button>
@@ -38,21 +38,24 @@
         {%endblock %}
         {% block about %}
       <li class="nav-items">
-        <a class="nav-link" href="#">About</a>
+        <a class="nav-link" href="{% url 'base:about'%}">About</a>
       </li>
         {%endblock%}
         {% block contact %}
       <li class="nav-items">
-        <a class="nav-link" href="#">Contact</a>
+        <a class="nav-link" href="{% url 'base:contact'%}">Contact</a>
       </li>
         {% endblock %}
 
     </ul>
     <form class="form-inline my-2 my-lg-0">
       <input class="form-control mr-sm-2" type="hidden" placeholder="Search" aria-label="Search">
+        {%if request.user.is_superuser%}
 {% block post%} <a href="{%url 'base:addpost' %}" class="btn btn-outline-success my-2 my-sm-0" >Add Post</a>{%endblock%}
                 {% block delete%}&nbsp; <url href="{% url 'base:delete' post.id %}'%" class="btn btn-outline-danger my-2 my-sm-0" >Delete Post</url>{%endblock%}
-                </form>&nbsp;&nbsp;
+        {%endif%}
+
+    </form>&nbsp;&nbsp;
        <ul class="nav navbar-nav navbar-right">
 
 
@@ -68,7 +71,7 @@
 {%block body%}
 {%endblock%}
 <br/>
- <footer class="py-5 bg-dark">
+ <footer class="py-5 bg-dark" style="margin-top:auto;">
             <div class="container"><p class="m-0 text-center text-white">Copyright &copy; Your Website 2022</p></div>
         </footer>
 
