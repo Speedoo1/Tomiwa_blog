@@ -1,8 +1,10 @@
+import random
 import socket
 import time
 from datetime import date
 
 import requests
+from chardet import detect
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
@@ -14,17 +16,50 @@ from django.shortcuts import render, redirect
 # Create your views here.
 from base.ck import addck
 from base.models import blog_post, post_comments, sub_comments, blog_like, affiliate, carousel, User
+from langdetect import detect
 
 
-def base(request, ):
+# def favourite_skill(request):
+
+
+def base(request):
     today = date.today()
+    page = random.randint(1, 500)
+    next = request.POST.get('next')
+    search = str(request.POST.get('search'))
+
+    if next:
+
+        udemiurl = next
+        headers = {
+            "Accept": "application/json, text/plain, */*",
+            "Authorization": "Basic "
+                             "S1Y5V1p5VHJ6U2t4S2I5MmpEaUpIWDRVSTlHMVJqT3FOUFlpbUJ6Ujpqc09nRW9lT2tQUzAxcUg2NnhINzkySlNNa3JOSHo3eEk3cVJrNkdBWEQyaFBXMkhONVFTeHU5eG1oMUxtTGVMT1BjVVRqRXRPaW5kNUsyTmVLRE1QVzVKNTRNSkNLc1BGYUV6TURycjhYWThjVER5WGF5Mno1b1B6V0dEOWhlcg==",
+            "Content-Type": "application/json;charset=utf-8"
+        }
+        udemyapi = requests.request('GET', udemiurl, headers=headers, ).json()
+        print(udemyapi['count'])
+    else:
+        udemiurl = 'https://www.udemy.com//api-2.0/courses/?search=' + search.replace(' ',
+                                                                                      "%20") + '&price=price-paid&page_size' \
+                                                                                               '=21&is_affiliate_agreed=True&language=en'
+        headers = {
+            "Accept": "application/json, text/plain, */*",
+            "Authorization": "Basic "
+                             "S1Y5V1p5VHJ6U2t4S2I5MmpEaUpIWDRVSTlHMVJqT3FOUFlpbUJ6Ujpqc09nRW9lT2tQUzAxcUg2NnhINzkySlNNa3JOSHo3eEk3cVJrNkdBWEQyaFBXMkhONVFTeHU5eG1oMUxtTGVMT1BjVVRqRXRPaW5kNUsyTmVLRE1QVzVKNTRNSkNLc1BGYUV6TURycjhYWThjVER5WGF5Mno1b1B6V0dEOWhlcg==",
+            "Content-Type": "application/json;charset=utf-8"
+        }
+        udemyapi = requests.request('GET', udemiurl, headers=headers, ).json()
+        print(udemyapi['count'])
+        # this are news api for getting latest news from the internet
     url = 'https://newsapi.org/v2/top-headlines?country=ng&apiKey=4698b5f489f140de81a1b5af83d77359'
-    post = blog_post.objects.all()
+    post = blog_post.objects.all().order_by('?')
     data = requests.get(url).json()
     caro = carousel.objects.all()
-    print(data)
+    #
 
-    context = {'post': post, 'news': data['articles'], 'carousel': caro}
+    context = {'post': post, 'news': data['articles'], 'udemy': udemyapi["results"], 'next': udemyapi['next'],
+               'previous': udemyapi['previous']}
 
     return render(request, 'base/index2.html', context)
 

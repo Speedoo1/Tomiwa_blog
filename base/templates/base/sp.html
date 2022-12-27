@@ -188,7 +188,7 @@
 
 <!--                    end of write comment section-->
                     <div>
-                        {% if switch == 'comment' %}
+                        {% if request.user.is_authenticated %}
                          <form method="post" action="{% url 'base:single' post.id %}" class="mb-4">
                                   {% csrf_token %}
 
@@ -197,11 +197,11 @@
 
                              </form>
                         {%else%}
-                         <form method="post" action="{% url 'base:single' post.id %}" class="mb-4">
+                         <form method='' action="{% url 'base:loging'%}" class="mb-4">
                                   {% csrf_token %}
 
-                                 <textarea class="form-control" required name="message" rows="3" placeholder="Join the discussion and leave a comment!">{{comment}}</textarea><br/>
-                             <input type="submit" class="btn btn-success" value="Update Comment">
+                                 <textarea class="form-control" required name="message" rows="3" placeholder="Join the discussion and leave a comment!">Join the discussion and leave a comment!</textarea><br/>
+                             <input type="submit" class="btn btn-success" value="Comment">
 
                              </form>
                         {%endif%}

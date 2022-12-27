@@ -3,6 +3,9 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content ="width = device-width,initial-scale=1.0">
+<meta http-equiv ="X-UA-Compatible"  content ="ie=edge">
+
     <title>Title</title>
      <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@1,600;1,700;1,800&family=Roboto:wght@400;500&display=swap" rel="stylesheet">
 
@@ -21,7 +24,7 @@
 
 </head>
 <body>
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark ">
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark " >
   <a class="navbar-brand" href="{% url 'base:index' %}">𝔖𝔭𝔢𝔢𝔡𝔬𝔬</a>
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon"></span>
@@ -41,6 +44,11 @@
         <a class="nav-link" href="{% url 'base:about'%}">About</a>
       </li>
         {%endblock%}
+         {% block favourite %}
+      <li class="nav-items">
+        <a class="nav-link" href="{% url 'base:contact'%}">Favourite Skill</a>
+      </li>
+        {% endblock %}
         {% block contact %}
       <li class="nav-items">
         <a class="nav-link" href="{% url 'base:contact'%}">Contact</a>
@@ -61,6 +69,7 @@
 
                 {%  if request.user.is_authenticated %}
                 <li><a href="{%url 'base:logout' %}" class="btn btn-danger"><span class="glyphicon glyphicon-log-out"></span> Logout</a></li>
+
                 {%else%}
               <li><a href="{% url 'base:loging'%}" class="btn btn-success"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
                 {%endif%}

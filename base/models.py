@@ -85,6 +85,16 @@ class affiliate(models.Model):
     link = models.TextField(blank=True, null=True)
 
 
+class favorite_digital_skill(models.Model):
+    id = models.UUIDField(default=uuid.uuid4, editable=False, primary_key=True)
+    username = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True)
+    image = models.TextField()
+    price = models.TextField()
+    url = models.TextField()
+    title = models.TextField()
+    headline = models.TextField()
+
+
 class carousel(models.Model):
     image = models.ImageField()
     quote = models.CharField(max_length=500)

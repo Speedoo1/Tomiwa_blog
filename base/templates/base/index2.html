@@ -111,6 +111,102 @@
 
     <div class="container">
         <div class="text-center">
+          <h2 class="text-center btn btn-success">Digital Skills to Learn</h2>
+        </div>
+
+
+        <div class="row">
+
+            <div class="container mt-5 ml-5">
+
+          <form action="{% url 'base:index'%}" method="post" class="form-outline">
+              {% csrf_token%}
+
+            <input type="search" id="form1" class="form-control" style="width:70%;" name="search" placeholder="search for digital skills " />
+            <button type="submit" class="btn btn-primary" style="height:30%;">
+            <i class="fas fa-search"></i>
+          </button>
+
+          </form>
+
+
+            </div>
+
+              {% for i in udemy  %}
+
+                    <div class="col-sm-12 col-md-12 col-lg-4 mt-5">
+                     <div class="card mb-4">
+
+                                <div class="card-body ">
+                                     <a href="https://www.udemy.com{{i.url}}"><img class="card-img-top" src ='{{i.image_480x270}}'   width="600" height="250" alt="..." /></a>
+                                    <div class="small text-muted">cost price: {{i.price}}</div>
+                                    <h2 class="card-title h4">{{i.title|truncatewords:20|safe}} </h2>
+                                    <p class="card-text">{{i.headline|truncatewords:50|safe}}</p>
+
+                                    <a class="btn btn-primary" href="https://www.udemy.com{{i.url}}">Read more →</a><br><br>
+                                    <hr/>
+
+                                    <span>By:</span>&nbsp;{{i.instructor_name}}
+                                     <form method="post" action="{% url 'base:index' %}">
+                                        {%csrf_token%}
+                                          <input type="hidden" name="image" value="{{i.image_480x270}}">
+                                          <input type="hidden" name="price" value="{{i.price}}">
+                                          <input type="hidden" name="title" value="{{i.title}}">
+                                          <input type="hidden" name="headline" value="{{i.headline}}">
+                                          <input type="hidden" name="url" value=https://www.udemy.com{{i.url}}">
+                                        <input type="submit" value="Add To Favorite" class="btn btn-success">
+                                    </form>
+
+                                </div>
+                            </div>
+
+               </div>
+
+               {%endfor%}
+            {% if previous %}
+              <form method="post" class="ml-5" action="{% url 'base:index' %}">
+                {%csrf_token%}
+                <input type="hidden" name="next" value="{{previous}}">
+                 <button type="submit"  class="btn btn-success"><i class="fa fa-angle-left" style="font-size:18px;color:#fff;width:18px" ></i>Previous </button>
+
+            </form>
+            {%else%}
+             <form method="post" class="ml-5" action="{% url 'base:index' %}">
+                {%csrf_token%}
+                <input type="hidden" name="next" value="{{previous}}">
+                 <button type="submit"  class="btn btn-secondary" disabled><i class="fa fa-angle-left" style="font-size:18px;color:#fff;width:18px" ></i>Previous </button>
+
+            </form>
+
+            {%endif%}
+
+            {%if next%}
+            &nbsp;<form method="post" class="ml-5" action="{% url 'base:index' %}">
+                {%csrf_token%}
+                <input type="hidden" name="next" value="{{next}}">
+            <button type="submit" value="Next" class="btn btn-success">Next <i class="fa fa-angle-right" style="font-size:18px;color:#fff;width:18px" ></i></button>
+
+            </form>
+            {%else%}
+            &nbsp;<form method="post" class="ml-5" action="{% url 'base:index' %}">
+                {%csrf_token%}
+                <input type="hidden" name="next" value="{{next}}">
+            <button type="submit" value="Next" class="btn btn-secondary" disabled>Next <i class="fa fa-angle-right" style="font-size:18px;color:#fff;width:18px" ></i></button>
+
+            </form>
+            {%endif%}
+
+
+
+
+        </div>
+    </div>
+
+<br/>
+
+
+    <div class="container">
+        <div class="text-center">
           <h2 class="text-center btn btn-success">Latest News Section</h2>
         </div>
 
@@ -126,7 +222,7 @@
                                 {%else%}
                                      <a href="{% static 'base/img/news.jpg' %}"><img class="card-img-top" src='{{i.urlToImage}}'    width="600" height="250" alt="..." /></a>
                                {%endif%}
-                                <div class="card-body ">
+                                <div class="card-body h-50 ">
                                     <div class="small text-muted">Posted on: {{i.publishedAt}}</div>
                                     <h2 class="card-title h4">{{i.title|truncatewords:20|safe}} </h2>
                                     <p class="card-text">{{i.description|truncatewords:50|safe}}</p>
@@ -145,7 +241,10 @@
         </div>
     </div>
 
-<br/>
+
+
+
+
 
 
 </div>
